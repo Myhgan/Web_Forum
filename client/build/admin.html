@@ -1,0 +1,246 @@
+<span style="font-family: verdana, geneva, sans-serif;">
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>ADMIN</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="/client/build/css/admin.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+        <style>
+            #banForm button:hover {
+                background-color: rgba(252, 61, 115, 0.73) !important;
+                color: black !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="#" class="logo">
+                            <img src="images/MonDeThuong.jpg" alt="">
+                            <span class="nav-item">Admin</span>
+                        </a></li>
+                    <li><a href="#">
+                            <i class="fas fa-home"></i>
+                            <span class="nav-item">Home</span>
+                        </a></li>
+                    <!-- <li><a href="">
+                            <i class="fas fa-user"></i>
+                            <span class="nav-item">Profile</span>
+                        </a></li>
+                    <li><a href="">
+                            <i class="fas fa-wallet"></i>
+                            <span class="nav-item">Wallet</span>
+                        </a></li>
+                    <li><a href="">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="nav-item">Analytics</span>
+                        </a></li>
+                    <li><a href="">
+                            <i class="fas fa-tasks"></i>
+                            <span class="nav-item">Tasks</span>
+                        </a></li>
+                    <li><a href="">
+                            <i class="fas fa-cog"></i>
+                            <span class="nav-item">Settings</span>
+                        </a></li>
+                    <li><a href="">
+                            <i class="fas fa-question-circle"></i>
+                            <span class="nav-item">Help</span>
+                        </a></li> -->
+                    <li><a class="logout" id="logoutButton">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="nav-item">Log out</span>
+                        </a></li>
+                </ul>
+            </nav>
+
+            <section class="main">
+                <!-- <div class="main-top">
+                    <h1>Skills</h1>
+                    <i class="fas fa-user-cog"></i>
+                </div>
+                <div class="main-skills">
+                    <div class="card">
+                        <i class="fas fa-laptop-code"></i>
+                        <h3>Web developemt</h3>
+                        <p>Join Over 1 million Students.</p>
+                        <button>Get Started</button>
+                    </div>
+                    <div class="card">
+                        <i class="fab fa-wordpress"></i>
+                        <h3>WordPress</h3>
+                        <p>Join Over 3 million Students.</p>
+                        <button>Get Started</button>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-palette"></i>
+                        <h3>graphic design</h3>
+                        <p>Join Over 2 million Students.</p>
+                        <button>Get Started</button>
+                    </div>
+                    <div class="card">
+                        <i class="fab fa-app-store-ios"></i>
+                        <h3>IOS dev</h3>
+                        <p>Join Over 1 million Students.</p>
+                        <button>Get Started</button>
+                    </div>
+                </div> -->
+
+                <section class="main-course">
+                    <h1>Funtions</h1>
+                    <div class="course-box">
+                        <ul>
+                            <li class="active">Ban account</li>
+                            <li>Ban comment</li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                        <div class="course">
+                            <!-- <div class="box">
+                                <h3>HTML</h3>
+                                <p>80% - progress</p>
+                                <button>continue</button>
+                                <i class="fab fa-html5 html"></i>
+                            </div>
+                            <div class="box">
+                                <h3>CSS</h3>
+                                <p>50% - progress</p>
+                                <button>continue</button>
+                                <i class="fab fa-css3-alt css"></i>
+                            </div>
+                            <div class="box">
+                                <h3>JavaScript</h3>
+                                <p>30% - progress</p>
+                                <button>continue</button>
+                                <i class="fab fa-js-square js"></i>
+                            </div> -->
+
+                            <form action="/ban" method="POST" id="banForm">
+                                <label for="userId" style="margin-right: 10px;">Chọn người dùng:</label>
+                                <select name="userId" id="userId" style="margin-right: 10px; padding: 3px 40px; border: 4px solid rgba(246, 108, 101, 0.133);"></select>
+                                <label for="banDuration" style="margin-right: 10px;">Thời hạn cấm:</label>
+                                <select name="banDuration" id="banDuration" style="margin-right: 10px; padding: 3px 40px; border: 4px solid rgba(246, 108, 101, 0.133);">
+                                    <option value="3600000">1 giờ</option>
+                                    <option value="7200000">2 giờ</option>
+                                    <option value="10800000">3 giờ</option>
+                                    <option value="0">Vĩnh viễn</option>
+                                </select>
+                                <button type="submit" style="font-size: 20px; background: #e26e6ea8; padding: 10px; border-radius: 50px; color: white;">Cấm Tài Khoản</button>
+                            </form>                            
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var logoutButton = document.getElementById("logoutButton");
+                logoutButton.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    sessionStorage.removeItem('token');
+                    localStorage.removeItem('avatar');
+                    window.location.href = "/client/build/page-login.html";
+                });
+
+                // Lấy get user all để lấy thông tin thằng muốn ban
+                fetch('http://localhost:3000/api/v1/users', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(users => {
+                    console.table(users.data);
+                    const selectBox = document.getElementById('userId');
+                    users.data.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user._id;
+                        option.text = `Username: ${user.username} - ID: ${user._id}`;
+                        selectBox.appendChild(option);
+                    }); 
+                })
+
+                .catch(error => {
+                    console.error('Error fetching users:', error);
+                });
+
+
+                // Ban thằng nào láo lếu 
+                var banForm = document.getElementById("banForm");
+                banForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    var selectedUserId = document.getElementById("userId").value;
+                    var banDuration = document.getElementById("banDuration").value;
+
+                    fetch(`http://localhost:3000/api/v1/users/ban/${selectedUserId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+                        },
+                        body: JSON.stringify({ banDuration: banDuration })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.data);
+                        } else {
+                            alert("Có lỗi xảy ra khi cấm tài khoản!");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error banning user:', error);
+                    });
+                });
+
+
+                var userId = localStorage.getItem('userId');
+                if(userId){
+                    fetch('http://localhost:3000/api/v1/users/' + userId)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(responseData => {
+                            const userData = responseData.data[0];
+                            if (!userData) {
+                                throw new Error('User data is undefined');
+                            }
+                            const userRole = userData.role;
+                            if (userRole.includes('ADMIN')) {
+                            } else {
+                                window.location.href = "/client/build/page-login.html";
+                            }
+                        })
+                        .catch(error => console.error('Error fetching user information:', error));
+                } else{
+                    window.location.href = "/client/build/page-login.html";
+                }
+        });
+
+        </script>
+    </body>
+
+    </html>
+</span>

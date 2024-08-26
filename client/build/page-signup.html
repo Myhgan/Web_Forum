@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Forum - Responsive HTML5 Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Forum - Responsive HTML5 Template">
+    <meta name="author" content="Forum">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- tt-mobile menu -->
+    <nav class="panel-menu" id="mobile-menu">
+        <ul>
+
+        </ul>
+        <div class="mm-navbtn-names">
+            <div class="mm-closebtn">
+                Close
+                <div class="tt-icon">
+                    <svg>
+                        <use xlink:href="#icon-cancel"></use>
+                    </svg>
+                </div>
+            </div>
+            <div class="mm-backbtn">Back</div>
+        </div>
+    </nav>
+    <main id="tt-pageContent" class="tt-offset-none">
+        <div class="container">
+            <div class="tt-loginpages-wrapper">
+                <div class="tt-loginpages">
+                    <a href="index.html" class="tt-block-title">
+                        <img src="images/MonDeThuong.jpg" width="50px" alt="">
+                        <div class="tt-title">
+                            Welcome to Forum19
+                        </div>
+                        <div class="tt-description">
+                            Join the forum to unlock true power of community.
+                        </div>
+                    </a>
+                    <form class="form-default" id="registerForm">
+                        <div class="form-group">
+                            <label for="loginUserName">Username</label>
+                            <input type="text" name="username" class="form-control" id="loginUserName">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginUserEmail">Email</label>
+                            <input type="text" name="email" class="form-control" id="loginUserEmail">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginUserPassword">Password</label>
+                            <input type="password" name="password" class="form-control" id="loginUserPassword">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="registerButton" class="btn btn-secondary btn-block">Create my
+                                account</button>
+                        </div>
+                    </form>
+                    <p>Do you have an account ?<a href="page-login.html" class="tt-underline">Login here</a></p>
+                    <div id="errorMessage" style="color: red;"></div>
+                    <div id="successMessage" style="color: green;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var registerButton = document.getElementById("registerButton");
+            registerButton.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                var username = document.getElementById("loginUserName").value;
+                var email = document.getElementById("loginUserEmail").value;
+                var password = document.getElementById("loginUserPassword").value;
+
+                var userData = {
+                    username: username,
+                    email: email,
+                    password: password
+                };
+
+                fetch('http://localhost:3000/api/v1/auth/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            var successMessageContainer = document.getElementById("successMessage");
+                            successMessageContainer.innerHTML = "";
+                            var successMessage = document.createElement("p");
+                            successMessage.textContent = "Đăng ký thành công: " + data.data.username;
+                            successMessageContainer.appendChild(successMessage);
+                            alert(successMessage.textContent);
+                        } else {
+                            var errorMessageContainer = document.getElementById("errorMessage");
+                            errorMessageContainer.innerHTML = "";
+                            data.data.forEach(error => {
+                                var errorMessage = document.createElement("p");
+                                errorMessage.textContent = error.msg;
+                                errorMessageContainer.appendChild(errorMessage);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Lỗi gửi yêu cầu:", error);
+                    });
+            });
+        });
+
+    </script>
+    <script src="js/bundle.js"></script>
+</body>
+
+</html>
